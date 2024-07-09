@@ -36,4 +36,13 @@ public class NodoCola {
         this.next = next;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("NodoCola{");
+        sb.append("residuo=").append(residuo);
+        sb.append('}');
+        return sb.toString();
+    }
+
 }
