@@ -17,7 +17,9 @@ public class Program {
         System.out.println("Bienvenido al sistema de la planta recicladora Pequeña Lisa");
         Scanner scanner = new Scanner(System.in);
         PilaResiduos pilaResiduos = new PilaResiduos();
+        PilaResiduos pila2 = new PilaResiduos();
         ColaResiduos colaReciclaje = new ColaResiduos();
+        ColaResiduos cola2 = new ColaResiduos();
         while (true) {
             System.out.println("\nMenú Principal:");
             System.out.println("1. Registrar ingreso de residuo");
@@ -33,7 +35,7 @@ public class Program {
 
             switch (opcion) {
                 case 1:
-                    registrarIngresoResiduos(scanner, pilaResiduos);
+                    registrarIngresoResiduos(scanner, pila2);
                     scanner.nextLine();
                     break;
                 case 2:
@@ -41,7 +43,11 @@ public class Program {
                     scanner.nextLine();
                     break;
                 case 3:
-                    apilarResiduo(scanner, pilaResiduos);
+                    if(!pila2.isEmpty()) {
+                        apilarResiduo(scanner, pilaResiduos, pila2);
+                    } else {
+                        System.out.println("Las dos pilas están vacías, registre un residuo primero");
+                    }
                     scanner.nextLine();
                     break;
                 case 4:
@@ -53,11 +59,11 @@ public class Program {
                     scanner.nextLine();
                     break;
                 case 6:
-                    desencolarResiduos(colaReciclaje);
+                    desencolarResiduos(colaReciclaje, cola2);
                     scanner.nextLine();
                     break;
                 case 7:
-                    convertirResiduosEnProductos(colaReciclaje);
+                    convertirResiduosEnProductos(cola2);
                     scanner.nextLine();
                     break;
                 case 8:
@@ -86,12 +92,8 @@ public class Program {
         pilaResiduos.print();
     }
 
-    public static void apilarResiduo(Scanner scanner, PilaResiduos pilaResiduos) {
-        System.out.print("Ingrese el nombre del residuo: ");
-        String nombre = scanner.next();
-        System.out.print("Ingrese el tipo de residuo (aluminio, papel, vidrio, etc.): ");
-        String tipo = scanner.next();
-        Residuo residuo = new Residuo(nombre, tipo);
+    public static void apilarResiduo(Scanner scanner, PilaResiduos pilaResiduos, PilaResiduos pila2) {
+        Residuo residuo = pila2.pop();
         pilaResiduos.Push(residuo);
         System.out.println("Residuo apilado.");
     }
@@ -111,10 +113,11 @@ public class Program {
         System.out.println(colaReciclaje.toString());
     }
 
-    public static void desencolarResiduos(ColaResiduos colaReciclaje) {
+    public static void desencolarResiduos(ColaResiduos colaReciclaje, ColaResiduos cola2) {
         System.out.println("Desencolando residuos de la Cola de reciclaje...");
         while (!colaReciclaje.isEmpty()) {
             NodoCola nodo = colaReciclaje.dequeue();
+            cola2.enqueue(nodo);
             Residuo residuo = nodo.getResiduo();
             System.out.println(residuo.toString());
             // Aquí puedes procesar el residuo si es necesario
